@@ -1,13 +1,13 @@
 # Lab 01: My Digital Geography Workspace
 
 ## Place of interest
-Seattle, Washington
+Green Lake, Seattle, Washington
 
 ## Geographic question
-How does access to public transportation vary across Seattle neighborhoods?
+How does access to public transportation vary around Green Lake?
 
 ## Possible data
-Bus stops, light rail stations, and population data.
+Bus stops, transit routes, and neighborhood population data.
 
 ## Mapping idea
-Create a web map comparing transit access across Seattle neighborhoods.
+Create a web map showing public transportation access round Green Lake.

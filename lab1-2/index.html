@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='utf-8' />
+    <title>my First Map</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1' />
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.js"></script>
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+   </style>
+</head>
+<body>
+    <!-- creates the container where the Mapbox will appear -->
+   <div id='map'></div>
+   <script>
+      // Sets the Mapbox access token used to load Mapbox map resources
+      mapboxgl.accessToken = 'pk.eyJ1IjoicnV0c2dhcmNpYSIsImEiOiJjbXV4MDE3dTkwM2ZyMnhwcTM1cXRndDFrIn0.ItVnyn3eqD6lu2xWbrpf1A';
+
+      // creates a new Mapbox map
+      const mymap = new mapboxgl.Map({ 
+             container: 'map', // places the map inside the div with id="map"
+             //style: 'mapbox://styles/mapbox/light-v11',
+             //projection: 'globe', 
+             center: [-122.3417, 47.6799], // centers the map on Green Lake
+             zoom:14 // sets the initial zoom level
+          });
+
+mymap.on('style.load', () => {
+    // Changes the basemap lighting to a dusk setting
+    mymap.setConfigProperty('basemap', 'lightPreset', 'dusk');
+
+    // Hides point-of-interest labels to reduce visual clutter
+    mymap.setConfigProperty('basemap', 'showPointOfInterestLabels', false);
+
+    // Hides road labels to create a cleaner map
+        // this is useful when the mapp focuses more on places or spatial 
+        // patterns than street namames.
+    mymap.setConfigProperty('basemap', 'showRoadLabels', false);
+
+    // Uses a faded theme to make the basemap less dominant
+        // this is useful when custom data or highlighted features should
+        // stand out more clearly.
+    mymap.setConfigProperty('basemap', 'theme', 'faded');
+});
+
+// Adds a fullscreen button so users can expand the map
+mymap.addControl(new mapboxgl.FullscreenControl());
+
+// Adds zoom buttons and a compass for map navigation
+mymap.addControl(new mapboxgl.NavigationControl());
+</script>
+</body>
+</html>

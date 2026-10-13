@@ -1,0 +1,31 @@
+<html>
+<head>
+    <meta charset=""utf-8">
+    <title>Geog458</title>
+    <meta name="viewpoint" content="intital-scale=1, maximum-scale=1, user-scalable=no">
+    <link href="https:api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gls.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.js"></script>
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%;}
+        #marker {
+            background-image: url('https://docs.mapbox.com/mapbox-gl-js/assets/washington-monument.jpg');
+            background-size: cover;
+            width: 50px; 
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .mapboxgl-popup {
+            max-width: 200px;}
+    </style>
+</head>
+<body>
+    <div id=""map"></div>
+    <script>
+        // TO MAKE THE MAP APPEAR YOU MUST
+        // ADD YOUR ACCESS TOKEN FROM
+        // https://account.mapbox.com
+        mapboxgl.accessToken = 'pk.eyJ1IjoibWFwdXN1cjAzIiwiYSI6ImNtdXp6zI5YjAwaXQyeG9vZmcyZTR2Y2oifQ.9tkX'
+    </script>
+</body>

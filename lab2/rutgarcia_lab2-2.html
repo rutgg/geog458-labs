@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>World Cities Population Map</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.js"></script>
+
+    <style>
+        body { margin: 0; padding: 0; }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+        /* Styles and positions the map title at the top center */
+        #title {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+            background: white;
+            padding: 10px 16px;
+            border-radius: 4px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        /* Layout of the population legend panel */
+        #legend {
+            position: absolute;
+            bottom: 30px;
+            right: 20px;
+            width: 190px;
+            background: white;
+            padding: 12px;
+            border-radius: 4px;
+            z-index: 1;
+        }
+
+        /* Each population class row */
+        .break {
+            position: relative;
+            margin: 8px 0;
+            min-height: 28px;
+        }
+
+        /* Circular population symbol */
+        .dot {
+            display: inline-block;
+            border-radius: 50%;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        /* Population class label */
+        .dot-label {
+            vertical-align: middle;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="title">World Cities by Population</div>
+    <div id="map"></div>
+    <!-- Placeholder where the population legend will appear -->
+    <div id="legend"></div>
+
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoicnV0c2dhcmNpYSIsImEiOiJjbXV4MDE3dTkwM2ZyMnhwcTM1cXRndDFrIn0.ItVnyn3eqD6lu2xWbrpf1A';
+
+        const mymap = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/light-v11',
+            center: [0, 20],
+            zoom: 1
+        });
+
+        mymap.on('load', () => {
+
+            // Loads the local world cities GeoJSON file
+            mymap.addSource('population', {
+                type: 'geojson',
+                data: 'data/world-cities.geojson'
+            });
+        
+        // Draws world cities as circles
+        mymap.addLayer({
+            id: 'population-layer',
+            type: 'circle',
+            source: 'population',
+
+            paint: {
+                // Uses graduated population classes so differences between small, medium,
+                // large, and very large cities are easy to compare.
+                // Larger circles and darker blues represent higher-population cities.
+                'circle-radius': [
+                    'step',
+                    ['get', 'population'],
+                    2,
+                    100000, 4,
+                    500000, 6,
+                    1000000, 9,
+                    5000000, 13
+                ],
+
+                // Uses darker colors for more populated cities
+                'circle-color': [
+                    'step',
+                    ['get', 'population'],
+                    '#deebf7',
+                    100000, '#9ecae1',
+                    500000, '#4292c6',
+                    1000000, '#2171b5',
+                    5000000, '#084594'
+                ],
+                'circle-stroke-width': 1,
+                'circle-stroke-color': 'white'
+            }
+        });
+        // Click a city circle to view its name and population
+        mymap.on('click', 'population-layer', (event) => {
+
+            // Gets the city feature that was clicked
+            const feature = event.features[0];
+
+            // Uses the city's longitude and latitude
+            const coordinates = feature.geometry.coordinates.slice(0, 2);
+
+            // Creates a popup with the city name and population
+            new mapboxgl.Popup()
+                .setLngLat(coordinates)
+                .setHTML(
+                    `<strong>${feature.properties.city}</strong><br>
+                    Population: ${feature.properties.population}`
+                )
+                .addTo(mymap);
+        });
+    });
+
+    // Connects the legend to the HTML element with id="legend"
+    const legend = document.getElementById('legend');
+
+    const labels = ['<strong>Population</strong>'];
+
+    const classes = [
+        { label: '< 100,000', radius: 2, color: '#deebf7' },
+        { label: '100,000 - 499,999', radius: 4, color: '#9ecae1' },
+        { label: '500,000 - 999,999', radius: 6, color: '#4292c6' },
+        { label: '1,000,000 - 4,999,999', radius: 9, color: '#2171b5' },
+        { label: '5,000,000+', radius: 13, color: '#084594' }
+    ];
+
+    for (let i = 0; i < classes.length; i++) {
+        const diameter = 2 * classes[i].radius;
+
+        labels.push(
+            '<p class="break"><i class="dot" style="background:' + classes[i].color +
+            '; width:' + diameter + 'px; height:' + diameter +
+            'px;"></i> <span class="dot-label">' +
+            classes[i].label + '</span></p>'
+        );
+    }
+
+    legend.innerHTML = labels.join('');
+
+    </script>
+</body>
+</html>

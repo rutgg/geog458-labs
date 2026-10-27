@@ -27,7 +27,7 @@ The station popups represent actual measured PM2.5 observations. The IDW raster 
 
 ### Guided map screenshot
 
-![Puget Sound PM2.5 guided map](images/pm25-map.png)
+![Puget Sound PM2.5 guided map](lab3/images/pm25-map.png)
 
 ---
 
@@ -55,7 +55,7 @@ The station points provide measured maximum 8-hour ozone values in parts per mil
 
 ### Independent map screenshot
 
-![Puget Sound ozone independent map](images/ozone-map.png)
+![Puget Sound ozone independent map](lab3/images/ozone-map.png)
 
 ### Interactive features
 
